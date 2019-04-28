@@ -1,0 +1,37 @@
+import aoc
+import hashlib
+
+input = aoc.getInput(4)
+i = 0
+found = 0
+
+while True:
+    hash = hashlib.md5((input + str(i)).encode('utf-8'))
+    digest = hash.hexdigest()
+
+    if(digest.startswith('000000')):
+        print(digest, i)
+        found += 1
+
+    if (found == 4):
+        break
+
+    i += 1
+
+# five zeros:
+# 000002c655df7738246e88f6c1c43eb7 282749
+# 000009a91d3753055962a4758e9bca48 384166
+# 00000af5c274d751fd17f1e96e10f9a2 1647256
+# 00000de48e645a258c8f3606ecec03dd 2254267
+# 00000d20c99e600692c6915c17affe7c 3745209
+# 00000ebbe9c49d2c62676958b988a8fe 3903717
+# 0000050418fe85e07a0a438b8c04f809 5303781
+# 00000327dc40a68a506a8485db591d5d 5838028
+# 000007fc34d57958673576a670bdd998 6008360
+# 0000037f9b156628487b813316256017 6401418
+
+# six zeros:
+# 0000004b347bf4b398b3f62ace7cd301 9962624
+# 000000e26f29bc9bb9a346e4427e5494 53755958
+# 0000000cc7d3232eee7656846aed23e3 57551859
+# 000000449fbcabc07a547a76343c6094 76034012
