@@ -1,6 +1,27 @@
 import aoc
 
 
-input = aoc.getInput(10)
+def iterate(prev):
+    next = ''
+    lastCh = ''
+    for ch in prev:
+        if lastCh == '':
+            count = 1
+        elif ch == lastCh:
+            count += 1
+        elif ch != lastCh:
+            next += str(count)
+            next += lastCh
+            count = 1
+        lastCh = ch
 
-print(input)
+    next += str(count)
+    next += lastCh
+    return next
+
+
+input = aoc.getInput(10)
+for i in range(50):
+    input = iterate(input)
+
+print(len(input))
