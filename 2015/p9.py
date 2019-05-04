@@ -38,7 +38,7 @@ def recurse(pathTotals, graph, nodes, curPath, curTotal):
                     [nodes[i]], curTotal + graph[index][i])
 
 
-input = aoc.getInput(9)
+input = aoc.get_input(9)
 nodes = getNodes(input)
 graph = buildGraph(input, nodes)
 

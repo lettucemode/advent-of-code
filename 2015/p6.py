@@ -1,6 +1,6 @@
 import aoc
 
-input = aoc.getInput(6)
+input = aoc.get_input(6)
 grid = [[0 for i in range(1000)] for i in range(1000)]
 
 

@@ -57,7 +57,7 @@ def isNice(line):
     return hasRepeatingPair(line) and hasSplitPair(line)
 
 
-input = aoc.getInput(5)
+input = aoc.get_input(5)
 nice = 0
 
 for line in input.splitlines():

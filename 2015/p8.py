@@ -1,6 +1,6 @@
 import aoc
 
-input = aoc.getInput(8)
+input = aoc.get_input(8)
 
 
 def getMemoryLength(line):

@@ -1,6 +1,6 @@
 import aoc
 
-input = aoc.getInput(1)
+input = aoc.get_input(1)
 floor = 0
 firstBasementPosition = 0
 

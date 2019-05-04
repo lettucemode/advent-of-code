@@ -1,6 +1,6 @@
 import aoc
 
-input = aoc.getInput(7)
+input = aoc.get_input(7)
 network = {}
 
 

@@ -25,7 +25,7 @@ def calcRibbonWrap(l, w, h):
     return min(2*l + 2*w, 2*w + 2*h, 2*l + 2*h)
 
 
-input = aoc.getInput(2)
+input = aoc.get_input(2)
 sqFeet = 0
 ribbon = 0
 

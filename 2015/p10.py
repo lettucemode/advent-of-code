@@ -20,7 +20,7 @@ def iterate(prev):
     return next
 
 
-input = aoc.getInput(10)
+input = aoc.get_input(10)
 for i in range(50):
     input = iterate(input)
 

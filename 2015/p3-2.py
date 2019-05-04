@@ -13,7 +13,7 @@ def move(x, y, symbol):
     return x, y
 
 
-input = aoc.getInput(3)
+input = aoc.get_input(3)
 x1 = 0
 y1 = 0
 x2 = 0

@@ -1,7 +1,7 @@
 import aoc
 import hashlib
 
-input = aoc.getInput(4)
+input = aoc.get_input(4)
 i = 0
 found = 0
 
