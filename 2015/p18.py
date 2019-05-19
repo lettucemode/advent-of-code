@@ -34,9 +34,9 @@ def step(grid):
                     new_grid[i][j] = '#'
 
     new_grid[0][0] = '#'
-    new_grid[0][len(new_grid[0])-1] = '#'
-    new_grid[len(new_grid)-1][0] = '#'
-    new_grid[len(new_grid)-1][len(new_grid[len(new_grid)-1])-1] = '#'
+    new_grid[0][-1] = '#'
+    new_grid[-1][0] = '#'
+    new_grid[-1][-1] = '#'
     return new_grid
 
 
