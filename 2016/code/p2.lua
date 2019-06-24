@@ -1,7 +1,8 @@
-io.input("../inputs/p2.txt")
-input = io.read("*a")
 local hylib = require 'hylib'
 local math = require 'math'
+
+io.input('../inputs/p2.txt')
+input = io.read('*a')
 
 -- keypads
 keypad_1 = {}

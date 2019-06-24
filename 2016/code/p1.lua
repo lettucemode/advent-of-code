@@ -1,5 +1,5 @@
-io.input("../inputs/p1.txt")
-input = io.read("*a")
+io.input('../inputs/p1.txt')
+input = io.read('*a')
 
 direction = 0
 x = 0
