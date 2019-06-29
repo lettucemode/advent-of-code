@@ -30,13 +30,14 @@ function smart_count(str)
 
         local c = str:sub(i,i)
         if c:find('%a+') then
-            worth = 1
+            local worth = 1
             for k, mult in pairs(multipliers) do
                 worth = worth * mult.val
                 mult.remaining = mult.remaining - 1
                 if mult.remaining <= 0 then multipliers[k] = nil end
             end
             count = count + worth
+            --print(c, worth)
             i = i + 1
         else
             local _, j, len, reps = str:find('(%d+)x(%d+)', i)
