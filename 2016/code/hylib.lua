@@ -20,6 +20,12 @@ function hylib.iter_to_table(iter, ...)
     return arr
 end
 
+function hylib.table_length(tab)
+    local count = 0
+    for _ in pairs(tab) do count = count + 1 end
+    return count
+end
+
 function hylib.init_table_entry(table, key, val)
     if not table[key] then table[key] = val end
 end

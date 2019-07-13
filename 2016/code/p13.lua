@@ -67,6 +67,4 @@ while not frontier:empty() do
 end
 
 --print('Path length to target --> '..cost_so_far[tkey])
-local count = 0
-for k, v in pairs(cost_so_far) do count = count + 1 end
-print(count)
+print(hylib.table_length(cost_so_far))
