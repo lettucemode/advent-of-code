@@ -3,36 +3,31 @@ local hylib = require 'hylib'
 io.input('../inputs/p19.txt')
 local input = io.read('*a')
 
-local orig_elves = tonumber(input)
-local cur_elves = orig_elves
-local elves = {}
-for i = 1, orig_elves do elves[i] = i end
-
-function get_elf_around(cur_elf)
-    local idx = ((cur_elf + 1) % orig_elves) + 1
-    while not elves[idx] do
-        idx = ((idx + 1) % orig_elves) + 1
-    end
-    return idx
+local total_elves = 50000-- tonumber(input)
+local remaining_elves = total_elves
+local circle = {value=1}
+local n = circle
+for i = 2, total_elves do 
+    n.next = {value=i}
+    n = n.next
 end
+n.next = circle
+print('done with setup')
 
-function get_elf_across(cur_elf)
-    local distance = cur_elves // 2
-    local target_elf = cur_elf
-    for i = 1, distance do target_elf = get_elf_around(target_elf) end
-    return target_elf
-end
-
-local cur_elf = 1
+local cur_elf = circle
 repeat
-    local target_elf = get_elf_around(cur_elf)
-    elves[cur_elf] = elves[cur_elf] + elves[target_elf]
-    elves[target_elf] = nil
-    cur_elves = cur_elves - 1
-    
-    local last_elf = cur_elf
-    cur_elf = get_elf_around(cur_elf)
+    -- part 1
+    --cur_elf.next = cur_elf.next.next
 
-until last_elf == cur_elf
+    -- part 2    
+    local distance = remaining_elves // 2
+    local t_elf = cur_elf
+    for i = 2, distance do t_elf = t_elf.next end
+    t_elf.next = t_elf.next.next
 
-print(cur_elf)
+    remaining_elves = remaining_elves - 1
+    --print(remaining_elves)
+    cur_elf = cur_elf.next
+until cur_elf.value == cur_elf.next.value
+
+print(cur_elf.value)
