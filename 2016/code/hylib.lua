@@ -81,7 +81,7 @@ end
 getmetatable('').__index['swap'] = function(s, arg1, arg2)
     if type(arg1) ~= type(arg2) then return nil end
     if type(arg1) == 'string' then
-        if arg1 < arg2 then
+        if s:find(arg1) < s:find(arg2) then
             return s:gsub('('..arg1..')(.*)('..arg2..')', '%3%2%1')
         else
             return s:gsub('('..arg2..')(.*)('..arg1..')', '%3%2%1')
@@ -93,10 +93,10 @@ end
 
 getmetatable('').__index['rotate'] = function(s, n)
     -- n < 0 for left, n < 0 for right
-    if n == 0 then return s end
+    if n == 0 or n == #s then return s end
     local ret = ''
     for i=1,#s do
-        local k = (i+(-1*n)-1) % #s
+        local k = (i-n-1) % #s
         ret = ret..s:sub(k+1,k+1)
     end
     return ret
@@ -108,16 +108,11 @@ getmetatable('').__index['move'] = function(s, from, to)
     local i = 1
     repeat
         if i == to then
-            if from > to then
-                ret = ret..s:sub(from,from)
-                ret = ret..s:sub(i,i)
-            else
-                ret = ret..s:sub(i,i)
-                ret = ret..s:sub(from,from)
-            end
-        elseif i == from then
+            ret = ret..s:sub(from,from)
+        elseif from <= i and i < to then
             ret = ret..s:sub(i+1,i+1)
-            i = i + 1
+        elseif to < i and i <= from then
+            ret = ret..s:sub(i-1,i-1)
         else
             ret = ret..s:sub(i,i)
         end
