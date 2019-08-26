@@ -3,31 +3,36 @@ local hylib = require 'hylib'
 io.input('../inputs/p19.txt')
 local input = io.read('*a')
 
-local total_elves = 50000-- tonumber(input)
+local total_elves = tonumber(input)
 local remaining_elves = total_elves
-local circle = {value=1}
-local n = circle
-for i = 2, total_elves do 
-    n.next = {value=i}
-    n = n.next
+local circle = {}
+for i=0,total_elves-1 do 
+    circle[i] = {value=i+1}
 end
-n.next = circle
+for i=0,total_elves-1 do 
+    circle[i].nxt = circle[(i+1)%total_elves]
+    circle[i].prv = circle[(i-1)%total_elves]
+end
+local cur_elf = circle[0]
+local mid_elf = circle[total_elves//2]
 print('done with setup')
 
-local cur_elf = circle
+function remove(elf)
+    elf.prv.nxt = elf.nxt
+    elf.nxt.prv = elf.prv
+end
+
 repeat
     -- part 1
-    --cur_elf.next = cur_elf.next.next
+    -- remove(cur_elf.nxt)
 
-    -- part 2    
-    local distance = remaining_elves // 2
-    local t_elf = cur_elf
-    for i = 2, distance do t_elf = t_elf.next end
-    t_elf.next = t_elf.next.next
-
+    -- part 2
+    remove(mid_elf)
+    mid_elf = mid_elf.nxt
     remaining_elves = remaining_elves - 1
-    --print(remaining_elves)
-    cur_elf = cur_elf.next
-until cur_elf.value == cur_elf.next.value
+    if remaining_elves % 2 == 0 then mid_elf = mid_elf.nxt end
+
+    cur_elf = cur_elf.nxt
+until cur_elf.value == cur_elf.nxt.value
 
 print(cur_elf.value)
