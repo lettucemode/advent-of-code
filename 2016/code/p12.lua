@@ -7,7 +7,7 @@ local DEC = 'dec'
 local CPY = 'cpy'
 local JNZ = 'jnz'
 
-local computer = {a=0,b=0,c=1,d=0}
+local computer = {a=0,b=0,c=0,d=0}
 local instructions = hylib.iter_to_table(input:splitlines())
 local i = 1
 while i <= #instructions do
