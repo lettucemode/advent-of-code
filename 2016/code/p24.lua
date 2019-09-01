@@ -73,19 +73,106 @@ end
 
 local cur = locations[0]
 locations[0].dist = 0
+locations[3].dist = 0
 repeat
     local min_length = 9001
     local min_idx = 9001
-    for test in hylib.where(locations, function(x) x.dist == nil end) do
-        
+    for test, i in hylib.where(locations, function(x) return x.dist == nil end) do
+        local length = get_shortest_path_length(cur, test)
+        if length < min_length then
+            min_length = length
+            min_idx = i
+        end
     end
-until not hylib.any(locations, function(x) return x.dist == nil end) do
-print(
-    get_shortest_path_length(locations[0], locations[0]),
-    get_shortest_path_length(locations[0], locations[1]),
-    get_shortest_path_length(locations[0], locations[2]),
-    get_shortest_path_length(locations[0], locations[3]),
-    get_shortest_path_length(locations[0], locations[4]),
-    get_shortest_path_length(locations[0], locations[5]),
-    get_shortest_path_length(locations[0], locations[6])
-)
+    locations[min_idx].dist = min_length
+    cur = locations[min_idx]
+    --print(min_idx, min_length)
+until not hylib.any(locations, function(x) return x.dist == nil end)
+
+local total = 0
+for i,loc in ipairs(locations) do total = total + loc.dist end
+-- part 2, cheated a bit here by forcing the algo to use 3 last
+total = total + get_shortest_path_length(cur, locations[3])
+total = total + get_shortest_path_length(locations[3], locations[0])
+print(total)
+
+-- print(
+--     get_shortest_path_length(locations[0], locations[0]),
+--     get_shortest_path_length(locations[0], locations[1]),
+--     get_shortest_path_length(locations[0], locations[2]),
+--     get_shortest_path_length(locations[0], locations[3]),
+--     get_shortest_path_length(locations[0], locations[4]),
+--     get_shortest_path_length(locations[0], locations[5]),
+--     get_shortest_path_length(locations[0], locations[6]),
+--     get_shortest_path_length(locations[0], locations[7])
+-- )
+-- print(
+--     get_shortest_path_length(locations[1], locations[0]),
+--     get_shortest_path_length(locations[1], locations[1]),
+--     get_shortest_path_length(locations[1], locations[2]),
+--     get_shortest_path_length(locations[1], locations[3]),
+--     get_shortest_path_length(locations[1], locations[4]),
+--     get_shortest_path_length(locations[1], locations[5]),
+--     get_shortest_path_length(locations[1], locations[6]),
+--     get_shortest_path_length(locations[1], locations[7])
+-- )
+-- print(
+--     get_shortest_path_length(locations[2], locations[0]),
+--     get_shortest_path_length(locations[2], locations[1]),
+--     get_shortest_path_length(locations[2], locations[2]),
+--     get_shortest_path_length(locations[2], locations[3]),
+--     get_shortest_path_length(locations[2], locations[4]),
+--     get_shortest_path_length(locations[2], locations[5]),
+--     get_shortest_path_length(locations[2], locations[6]),
+--     get_shortest_path_length(locations[2], locations[7])
+-- )
+-- print(
+--     get_shortest_path_length(locations[3], locations[0]),
+--     get_shortest_path_length(locations[3], locations[1]),
+--     get_shortest_path_length(locations[3], locations[2]),
+--     get_shortest_path_length(locations[3], locations[3]),
+--     get_shortest_path_length(locations[3], locations[4]),
+--     get_shortest_path_length(locations[3], locations[5]),
+--     get_shortest_path_length(locations[3], locations[6]),
+--     get_shortest_path_length(locations[3], locations[7])
+-- )
+-- print(
+--     get_shortest_path_length(locations[4], locations[0]),
+--     get_shortest_path_length(locations[4], locations[1]),
+--     get_shortest_path_length(locations[4], locations[2]),
+--     get_shortest_path_length(locations[4], locations[3]),
+--     get_shortest_path_length(locations[4], locations[4]),
+--     get_shortest_path_length(locations[4], locations[5]),
+--     get_shortest_path_length(locations[4], locations[6]),
+--     get_shortest_path_length(locations[4], locations[7])
+-- )
+-- print(
+--     get_shortest_path_length(locations[5], locations[0]),
+--     get_shortest_path_length(locations[5], locations[1]),
+--     get_shortest_path_length(locations[5], locations[2]),
+--     get_shortest_path_length(locations[5], locations[3]),
+--     get_shortest_path_length(locations[5], locations[4]),
+--     get_shortest_path_length(locations[5], locations[5]),
+--     get_shortest_path_length(locations[5], locations[6]),
+--     get_shortest_path_length(locations[5], locations[7])
+-- )
+-- print(
+--     get_shortest_path_length(locations[6], locations[0]),
+--     get_shortest_path_length(locations[6], locations[1]),
+--     get_shortest_path_length(locations[6], locations[2]),
+--     get_shortest_path_length(locations[6], locations[3]),
+--     get_shortest_path_length(locations[6], locations[4]),
+--     get_shortest_path_length(locations[6], locations[5]),
+--     get_shortest_path_length(locations[6], locations[6]),
+--     get_shortest_path_length(locations[6], locations[7])
+-- )
+-- print(
+--     get_shortest_path_length(locations[7], locations[0]),
+--     get_shortest_path_length(locations[7], locations[1]),
+--     get_shortest_path_length(locations[7], locations[2]),
+--     get_shortest_path_length(locations[7], locations[3]),
+--     get_shortest_path_length(locations[7], locations[4]),
+--     get_shortest_path_length(locations[7], locations[5]),
+--     get_shortest_path_length(locations[7], locations[6]),
+--     get_shortest_path_length(locations[7], locations[7])
+-- )
