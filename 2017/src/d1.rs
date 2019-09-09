@@ -1,6 +1,6 @@
 use super::common;
 
-pub fn solve() -> (u32, u32) {
+pub fn solve() -> (u32, u32, u32) {
     let input = common::get_input("./input/d1.txt");
 
     // Part 1
@@ -25,5 +25,5 @@ pub fn solve() -> (u32, u32) {
         }
     }
 
-    (total_p1, total_p2)
+    (1, total_p1, total_p2)
 }

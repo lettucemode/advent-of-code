@@ -1,6 +1,6 @@
 use super::common;
 
-pub fn solve() -> (u32, u32) {
+pub fn solve() -> (u32, u32, u32) {
     let input = common::get_input("./input/d2.txt");
     let lines: Vec<&str> = input.split_terminator("\n").collect();
 
@@ -49,5 +49,5 @@ pub fn solve() -> (u32, u32) {
         }
     }
 
-    (diff_sum, divisible_sum)
+    (2, diff_sum, divisible_sum)
 }
