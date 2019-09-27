@@ -1,7 +1,8 @@
 use super::common;
 
 pub fn solve() -> (u32, u32, u32) {
-    let input = common::get_input("./input/d1.txt");
+    let day_number = 1;
+    let input = common::get_input(format!("./input/d{}.txt", day_number));
 
     // Part 1
     let mut total_p1: u32 = 0;
@@ -25,5 +26,5 @@ pub fn solve() -> (u32, u32, u32) {
         }
     }
 
-    (1, total_p1, total_p2)
+    (day_number, total_p1, total_p2)
 }
