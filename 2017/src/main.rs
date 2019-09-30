@@ -6,11 +6,12 @@ mod d4;
 use std::fmt::Display;
 use std::time::Instant;
 
-type PuzzleFunc<T> = fn() -> (u32, T, T);
+type PuzzleFunc<T> = fn(String) -> (T, T);
 
-fn run_puzzle<T: Display>(func: PuzzleFunc<T>) {
+fn run_puzzle<T: Display>(day: u8, func: PuzzleFunc<T>) {
+    let input = common::get_input(format!("./input/d{}.txt", day));
     let start = Instant::now();
-    let (day, rp1, rp2) = func();
+    let (rp1, rp2) = func(input);
     let millis = start.elapsed().as_millis();
     let secs = millis / 1000;
     let msecs = ((millis as f32 / 1000.0) - (millis as f32 / 1000.0).trunc()) * 1000.0;
@@ -21,12 +22,8 @@ fn run_puzzle<T: Display>(func: PuzzleFunc<T>) {
 }
 
 fn main() {
-    // Day 1
-    run_puzzle(d1::solve);
-    // Day 2
-    run_puzzle(d2::solve);
-    // Day 3
-    run_puzzle(d3::solve);
-    // Day 4
-    run_puzzle(d4::solve);
+    run_puzzle(1, d1::solve);
+    run_puzzle(2, d2::solve);
+    run_puzzle(3, d3::solve);
+    run_puzzle(4, d4::solve);
 }

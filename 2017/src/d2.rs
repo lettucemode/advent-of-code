@@ -1,8 +1,4 @@
-use super::common;
-
-pub fn solve() -> (u32, u32, u32) {
-    let day_number = 2;
-    let input = common::get_input(format!("./input/d{}.txt", day_number));
+pub fn solve(input: String) -> (u32, u32) {
     let lines: Vec<&str> = input.split_terminator("\n").collect();
 
     // Part 1
@@ -50,5 +46,5 @@ pub fn solve() -> (u32, u32, u32) {
         }
     }
 
-    (day_number, diff_sum, divisible_sum)
+    (diff_sum, divisible_sum)
 }

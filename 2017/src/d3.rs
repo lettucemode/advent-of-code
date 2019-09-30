@@ -1,11 +1,8 @@
-use super::common;
 use std::cmp;
 
-pub fn solve() -> (u32, i32, i32) {
-    let day_number = 3;
-    let input = common::get_input(format!("./input/d{}.txt", day_number));
+pub fn solve(input: String) -> (i32, i32) {
     let input: i32 = input.parse().unwrap();
-    (day_number, part_one(input), part_two(input))
+    (part_one(input), part_two(input))
 }
 
 fn part_one(input: i32) -> i32 {
