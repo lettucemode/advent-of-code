@@ -3,6 +3,7 @@ mod d1;
 mod d2;
 mod d3;
 mod d4;
+mod d5;
 use std::fmt::Display;
 use std::time::Instant;
 
@@ -26,4 +27,5 @@ fn main() {
     run_puzzle(2, d2::solve);
     run_puzzle(3, d3::solve);
     run_puzzle(4, d4::solve);
+    run_puzzle(5, d5::solve);
 }
