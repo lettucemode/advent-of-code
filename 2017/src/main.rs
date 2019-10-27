@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 mod common;
 mod d1;
 mod d2;
@@ -6,6 +7,7 @@ mod d4;
 mod d5;
 mod d6;
 mod d7;
+mod d8;
 use std::fmt::Display;
 use std::time::Instant;
 
@@ -25,11 +27,12 @@ fn run_puzzle<T: Display, U: Display>(day: u8, func: PuzzleFunc<T, U>) {
 }
 
 fn main() {
-    run_puzzle(1, d1::solve);
-    run_puzzle(2, d2::solve);
-    run_puzzle(3, d3::solve);
-    run_puzzle(4, d4::solve);
-    run_puzzle(5, d5::solve);
-    run_puzzle(6, d6::solve);
-    run_puzzle(7, d7::solve);
+    // run_puzzle(1, d1::solve);
+    // run_puzzle(2, d2::solve);
+    // run_puzzle(3, d3::solve);
+    // run_puzzle(4, d4::solve);
+    // run_puzzle(5, d5::solve);
+    // run_puzzle(6, d6::solve);
+    // run_puzzle(7, d7::solve);
+    run_puzzle(8, d8::solve);
 }
