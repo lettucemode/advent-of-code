@@ -5,12 +5,13 @@ mod d3;
 mod d4;
 mod d5;
 mod d6;
+mod d7;
 use std::fmt::Display;
 use std::time::Instant;
 
-type PuzzleFunc<T> = fn(String) -> (T, T);
+type PuzzleFunc<T, U> = fn(String) -> (T, U);
 
-fn run_puzzle<T: Display>(day: u8, func: PuzzleFunc<T>) {
+fn run_puzzle<T: Display, U: Display>(day: u8, func: PuzzleFunc<T, U>) {
     let input = common::get_input(format!("./input/d{}.txt", day));
     let start = Instant::now();
     let (rp1, rp2) = func(input);
@@ -30,4 +31,5 @@ fn main() {
     run_puzzle(4, d4::solve);
     run_puzzle(5, d5::solve);
     run_puzzle(6, d6::solve);
+    run_puzzle(7, d7::solve);
 }
