@@ -2,6 +2,7 @@
 mod common;
 mod d1;
 mod d10;
+mod d11;
 mod d2;
 mod d3;
 mod d4;
@@ -38,5 +39,6 @@ fn main() {
     // run_puzzle(7, d7::solve);
     // run_puzzle(8, d8::solve);
     // run_puzzle(9, d9::solve);
-    run_puzzle(10, d10::solve);
+    //run_puzzle(10, d10::solve);
+    run_puzzle(11, d11::solve);
 }
