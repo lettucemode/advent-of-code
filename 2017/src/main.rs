@@ -5,6 +5,8 @@ mod d10;
 mod d11;
 mod d12;
 mod d13;
+mod d14;
+mod d15;
 mod d2;
 mod d3;
 mod d4;
@@ -44,5 +46,7 @@ fn main() {
     // run_puzzle(10, d10::solve);
     // run_puzzle(11, d11::solve);
     // run_puzzle(12, d12::solve);
-    run_puzzle(13, d13::solve);
+    // run_puzzle(13, d13::solve);
+    // run_puzzle(14, d14::solve);
+    run_puzzle(15, d15::solve);
 }
