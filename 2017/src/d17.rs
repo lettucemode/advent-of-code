@@ -1,4 +1,4 @@
-const ITERATIONS: u32 = 2017;
+const ITERATIONS: u32 = 50000000; //2017;
 
 pub fn solve(input: String) -> (u32, u32) {
     let step_size: usize = input.parse().unwrap();
