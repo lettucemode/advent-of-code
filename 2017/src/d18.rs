@@ -15,54 +15,54 @@ pub fn solve(input: String) -> (i64, i64) {
     let instructions = parse_instructions(input);
     let mut pc: i64 = 0;
     while 0 <= pc && pc < instructions.len() as i64 {
-        // println!("PC: {}, {:?}", pc, instructions[pc as usize]);
-        match instructions[pc as usize].command {
+        let inst = &instructions[pc as usize];
+        // println!("PC: {}, {:?}", pc, inst);
+        match inst.command {
             Command::Sound => {
-                last_played = registers[&instructions[pc as usize].reg1];
+                last_played = registers[&inst.reg1];
                 // println!(
                 //     " BEEP BEEP {} BEEP BEEP ",
-                //     registers[&instructions[pc as usize].reg1]
+                //     registers[&inst.reg1]
                 // );
                 pc = pc + 1;
             }
             Command::Set => {
-                *registers.get_mut(&instructions[pc as usize].reg1).unwrap() =
-                    if instructions[pc as usize].reg2 == ' ' {
-                        instructions[pc as usize].val2
-                    } else {
-                        registers[&instructions[pc as usize].reg2]
-                    };
+                *registers.get_mut(&inst.reg1).unwrap() = if inst.reg2 == ' ' {
+                    inst.val2
+                } else {
+                    registers[&inst.reg2]
+                };
                 pc = pc + 1;
             }
             Command::Add => {
-                let v2 = if instructions[pc as usize].reg2 == ' ' {
-                    instructions[pc as usize].val2
+                let v2 = if inst.reg2 == ' ' {
+                    inst.val2
                 } else {
-                    registers[&instructions[pc as usize].reg2]
+                    registers[&inst.reg2]
                 };
-                *registers.get_mut(&instructions[pc as usize].reg1).unwrap() += v2;
+                *registers.get_mut(&inst.reg1).unwrap() += v2;
                 pc = pc + 1;
             }
             Command::Multiply => {
-                let v2 = if instructions[pc as usize].reg2 == ' ' {
-                    instructions[pc as usize].val2
+                let v2 = if inst.reg2 == ' ' {
+                    inst.val2
                 } else {
-                    registers[&instructions[pc as usize].reg2]
+                    registers[&inst.reg2]
                 };
-                *registers.get_mut(&instructions[pc as usize].reg1).unwrap() *= v2;
+                *registers.get_mut(&inst.reg1).unwrap() *= v2;
                 pc = pc + 1;
             }
             Command::Modulus => {
-                let v2 = if instructions[pc as usize].reg2 == ' ' {
-                    instructions[pc as usize].val2
+                let v2 = if inst.reg2 == ' ' {
+                    inst.val2
                 } else {
-                    registers[&instructions[pc as usize].reg2]
+                    registers[&inst.reg2]
                 };
-                *registers.get_mut(&instructions[pc as usize].reg1).unwrap() %= v2;
+                *registers.get_mut(&inst.reg1).unwrap() %= v2;
                 pc = pc + 1;
             }
             Command::Recover => {
-                if registers[&instructions[pc as usize].reg1] > 0 {
+                if registers[&inst.reg1] > 0 {
                     last_recover = last_played;
                     // break now for part 1
                     break;
@@ -70,11 +70,11 @@ pub fn solve(input: String) -> (i64, i64) {
                 pc = pc + 1;
             }
             Command::JumpGtrZero => {
-                if registers[&instructions[pc as usize].reg1] > 0 {
-                    pc += if instructions[pc as usize].reg2 == ' ' {
-                        instructions[pc as usize].val2
+                if registers[&inst.reg1] > 0 {
+                    pc += if inst.reg2 == ' ' {
+                        inst.val2
                     } else {
-                        registers[&instructions[pc as usize].reg2]
+                        registers[&inst.reg2]
                     };
                 } else {
                     pc = pc + 1;
