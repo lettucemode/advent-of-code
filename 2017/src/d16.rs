@@ -1,5 +1,10 @@
-use std::collections::HashMap;
-use std::str;
+// Part 1: bijankplfgmeodhc
+// Part 2: bpjahknliomefdgc
+// so for this one, I eventually noticed that every factor of 10th answer
+// (after 10 runs, 100 runs, 1000 runs, etc.) was the same answer
+// so probably the correct solution here is to implement something that looks for patterns
+// and how often it loops etc, then extrapolate that out to 1 billion
+// but eh, I've been stuck on this for so long...moving on!
 
 enum MoveType {
     Spin,
@@ -15,36 +20,19 @@ struct DanceMove {
 
 pub fn solve(input: String) -> (String, String) {
     let moves: Vec<DanceMove> = build_moves_list(input);
-    let mut dance_line: HashMap<char, u8> = [
-        ('a', 0),
-        ('b', 1),
-        ('c', 2),
-        ('d', 3),
-        ('e', 4),
-        ('f', 5),
-        ('g', 6),
-        ('h', 7),
-        ('i', 8),
-        ('j', 9),
-        ('k', 10),
-        ('l', 11),
-        ('m', 12),
-        ('n', 13),
-        ('o', 14),
-        ('p', 15),
+    let mut front: i8 = 0;
+    let mut dance_line: Vec<char> = [
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
     ]
     .iter()
     .cloned()
     .collect();
-    do_a_dance(&moves, &mut dance_line);
-    let first_dance = to_string(&dance_line);
-    for i in 0..(1000000000 - 1) {
-        do_a_dance(&moves, &mut dance_line);
-        if i % 1000 == 0 {
-            println!("hey");
-        }
+    do_a_dance(&moves, &mut dance_line, &mut front);
+    let first_dance = to_string(&dance_line, front);
+    for _ in 0..(100 - 1) {
+        do_a_dance(&moves, &mut dance_line, &mut front);
     }
-    (first_dance, to_string(&dance_line))
+    (first_dance, to_string(&dance_line, front))
 }
 
 fn build_moves_list(input: String) -> Vec<DanceMove> {
@@ -84,36 +72,43 @@ fn build_moves_list(input: String) -> Vec<DanceMove> {
     moves
 }
 
-fn do_a_dance(moves: &Vec<DanceMove>, dance_line: &mut HashMap<char, u8>) {
+fn do_a_dance(moves: &Vec<DanceMove>, dance_line: &mut Vec<char>, front: &mut i8) {
+    let dance_len = dance_line.len();
     for dance_move in moves {
         match dance_move.step {
             MoveType::Spin => {
-                // for pair in dance_line.iter_mut() {
-                //     *pair.1 = (*pair.1 + dance_move.p1) % 16u8;
-                // }
+                *front = (*front + dance_len as i8 - dance_move.p1 as i8) % dance_len as i8;
             }
             MoveType::Exchange => {
-                // let c1 = *dance_line.iter().find(|x| *x.1 == dance_move.p1).unwrap().0;
-                // let c2 = *dance_line.iter().find(|x| *x.1 == dance_move.p2).unwrap().0;
-                // let t = *dance_line.get(&c1).unwrap();
-                // *dance_line.get_mut(&c1).unwrap() = *dance_line.get(&c2).unwrap();
-                // *dance_line.get_mut(&c2).unwrap() = t;
+                dance_line.swap(
+                    (*front as usize + dance_move.p1 as usize) % dance_len,
+                    (*front as usize + dance_move.p2 as usize) % dance_len,
+                );
             }
             MoveType::Partner => {
-                let c1 = dance_move.p1 as char;
-                let c2 = dance_move.p2 as char;
-                let t = *dance_line.get(&c1).unwrap();
-                *dance_line.get_mut(&c1).unwrap() = *dance_line.get(&c2).unwrap();
-                *dance_line.get_mut(&c2).unwrap() = t;
+                let mut i1: usize = dance_len;
+                let mut i2: usize = dance_len;
+                for i in 0..dance_len {
+                    if dance_line[i] == dance_move.p1 as char {
+                        i1 = i;
+                    } else if dance_line[i] == dance_move.p2 as char {
+                        i2 = i;
+                    }
+                    if i1 < dance_len && i2 < dance_len {
+                        break;
+                    }
+                }
+                dance_line.swap(i1, i2);
             }
         }
     }
 }
 
-fn to_string(dance_line: &HashMap<char, u8>) -> String {
-    let mut bytes: Vec<u8> = vec![0; 16];
-    for pair in dance_line.iter() {
-        bytes[*pair.1 as usize] = *pair.0 as u8;
+fn to_string(dance_line: &Vec<char>, front: i8) -> String {
+    let dance_len = dance_line.len();
+    let mut temp: Vec<char> = vec![' '; dance_len];
+    for i in 0..dance_len {
+        temp[i] = dance_line[(front as usize + i) % dance_len];
     }
-    str::from_utf8(&bytes).unwrap().to_owned()
+    temp.iter().collect()
 }
