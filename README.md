@@ -1,6 +1,6 @@
 # advent-of-code
 
-My solutions for the Advent of Code programming problems.
+My solutions for the Advent of Code programming problems. https://adventofcode.com/2019/about
 
 ### Languages used for each year
 
