@@ -1,88 +1,36 @@
-// todo for part 2:
-// - convert to Programs with runUntilBlock()
-// - track num of things sent
-// - track part 1 solution too (part about < 0 isn't in part 2 reqs)
-
 use std::collections::HashMap;
+use std::collections::VecDeque;
 
 pub fn solve(input: String) -> (i64, i64) {
-    let mut registers: HashMap<char, i64> = "abcdefghijklmnopqrstuvwxyz"
+    let registers: HashMap<char, i64> = "abcdefghijklmnopqrstuvwxyz"
         .chars()
         .map(|c| (c, 0i64))
         .collect::<HashMap<_, _>>();
-    let mut last_played: i64 = 0;
-    let mut last_recover: i64 = 0;
-    let instructions = parse_instructions(input);
-    let mut pc: i64 = 0;
-    while 0 <= pc && pc < instructions.len() as i64 {
-        let inst = &instructions[pc as usize];
-        // println!("PC: {}, {:?}", pc, inst);
-        match inst.command {
-            Command::Sound => {
-                last_played = registers[&inst.reg1];
-                // println!(
-                //     " BEEP BEEP {} BEEP BEEP ",
-                //     registers[&inst.reg1]
-                // );
-                pc = pc + 1;
-            }
-            Command::Set => {
-                *registers.get_mut(&inst.reg1).unwrap() = if inst.reg2 == ' ' {
-                    inst.val2
-                } else {
-                    registers[&inst.reg2]
-                };
-                pc = pc + 1;
-            }
-            Command::Add => {
-                let v2 = if inst.reg2 == ' ' {
-                    inst.val2
-                } else {
-                    registers[&inst.reg2]
-                };
-                *registers.get_mut(&inst.reg1).unwrap() += v2;
-                pc = pc + 1;
-            }
-            Command::Multiply => {
-                let v2 = if inst.reg2 == ' ' {
-                    inst.val2
-                } else {
-                    registers[&inst.reg2]
-                };
-                *registers.get_mut(&inst.reg1).unwrap() *= v2;
-                pc = pc + 1;
-            }
-            Command::Modulus => {
-                let v2 = if inst.reg2 == ' ' {
-                    inst.val2
-                } else {
-                    registers[&inst.reg2]
-                };
-                *registers.get_mut(&inst.reg1).unwrap() %= v2;
-                pc = pc + 1;
-            }
-            Command::Recover => {
-                if registers[&inst.reg1] > 0 {
-                    last_recover = last_played;
-                    // break now for part 1
-                    break;
-                }
-                pc = pc + 1;
-            }
-            Command::JumpGtrZero => {
-                if registers[&inst.reg1] > 0 {
-                    pc += if inst.reg2 == ' ' {
-                        inst.val2
-                    } else {
-                        registers[&inst.reg2]
-                    };
-                } else {
-                    pc = pc + 1;
-                }
-            }
+
+    let mut prog0 = Program::new(parse_instructions(input.clone()), registers.clone(), 0);
+    let mut prog1 = Program::new(parse_instructions(input.clone()), registers.clone(), 1);
+
+    let mut part1_answer: i64 = 0;
+    loop {        
+        let p0_blocked = prog0.step();
+        let p1_blocked = prog1.step();
+        if p0_blocked && p1_blocked {
+            break;
         }
+        if prog0.last_rcv != 0 && part1_answer == 0 {
+            part1_answer = prog0.last_rcv;
+        }
+        match prog0.output {
+            Some(v) => prog1.input_q.push_back(v),
+            None => (),
+        };
+        match prog1.output {
+            Some(v) => prog0.input_q.push_back(v),
+            None => (),
+        };
     }
-    (last_recover, 0)
+
+    (part1_answer, prog1.sends)
 }
 
 fn parse_instructions(input: String) -> Vec<Instruction> {
@@ -141,7 +89,7 @@ fn parse_instructions(input: String) -> Vec<Instruction> {
                     )),
                 }
             }
-            "rcv" => list.push(Instruction::new(Command::Recover, reg, ' ', 0)),
+            "rcv" => list.push(Instruction::new(Command::Receive, reg, ' ', 0)),
             "jgz" => {
                 let p2 = parts.next().unwrap();
                 match p2.parse::<i64>() {
@@ -160,7 +108,114 @@ fn parse_instructions(input: String) -> Vec<Instruction> {
     list
 }
 
-#[derive(Debug)]
+struct Program {
+    instructions: Vec<Instruction>,
+    registers: HashMap<char, i64>,
+    pc: i64,
+    pub last_send: i64,
+    pub output: Option<i64>,
+    pub last_rcv: i64,
+    pub input_q: VecDeque<i64>,
+    pub sends: i64,
+}
+
+impl Program {
+    fn new(insts: Vec<Instruction>, regs: HashMap<char, i64>, num: i64) -> Program {
+        let mut prog = Program {
+            instructions: insts,
+            registers: regs,
+            pc: 0,
+            last_send: 0,
+            output: None,
+            last_rcv: 0,
+            input_q: VecDeque::<i64>::new(),
+            sends: 0,
+        };
+        *prog.registers.get_mut(&'p').unwrap() = num;
+        prog
+    }
+
+    pub fn step(&mut self) -> bool {
+        let inst = &self.instructions[self.pc as usize];
+        let mut blocked = false;
+        self.output = None;
+        match inst.command {
+            Command::Sound => {
+                self.last_send = if inst.reg1.is_numeric() {
+                    inst.reg1.to_digit(10).unwrap().into()
+                } else {
+                    self.registers[&inst.reg1]
+                };
+                self.output = Some(self.last_send);
+                self.sends += 1;
+                self.pc = self.pc + 1;
+            }
+            Command::Set => {
+                *self.registers.get_mut(&inst.reg1).unwrap() = if inst.reg2 == ' ' {
+                    inst.val2
+                } else {
+                    self.registers[&inst.reg2]
+                };
+                self.pc = self.pc + 1;
+            }
+            Command::Add => {
+                let v2 = if inst.reg2 == ' ' {
+                    inst.val2
+                } else {
+                    self.registers[&inst.reg2]
+                };
+                *self.registers.get_mut(&inst.reg1).unwrap() += v2;
+                self.pc = self.pc + 1;
+            }
+            Command::Multiply => {
+                let v2 = if inst.reg2 == ' ' {
+                    inst.val2
+                } else {
+                    self.registers[&inst.reg2]
+                };
+                *self.registers.get_mut(&inst.reg1).unwrap() *= v2;
+                self.pc = self.pc + 1;
+            }
+            Command::Modulus => {
+                let v2 = if inst.reg2 == ' ' {
+                    inst.val2
+                } else {
+                    self.registers[&inst.reg2]
+                };
+                *self.registers.get_mut(&inst.reg1).unwrap() %= v2;
+                self.pc = self.pc + 1;
+            }
+            Command::Receive => {
+                self.last_rcv = self.last_send;
+                if self.input_q.is_empty() {
+                    blocked = true;
+                } else {
+                    *self.registers.get_mut(&inst.reg1).unwrap() =
+                        self.input_q.pop_front().unwrap();
+                    self.pc = self.pc + 1;
+                }
+            }
+            Command::JumpGtrZero => {
+                let tval: i64 = if inst.reg1.is_numeric() {
+                    inst.reg1.to_digit(10).unwrap().into()
+                } else {
+                    self.registers[&inst.reg1]
+                };
+                if tval > 0 {
+                    self.pc += if inst.reg2 == ' ' {
+                        inst.val2
+                    } else {
+                        self.registers[&inst.reg2]
+                    };
+                } else {
+                    self.pc = self.pc + 1;
+                }
+            }
+        }
+        blocked
+    }
+}
+
 struct Instruction {
     command: Command,
     reg1: char,
@@ -179,13 +234,12 @@ impl Instruction {
     }
 }
 
-#[derive(Debug)]
 enum Command {
     Sound,
     Set,
     Add,
     Multiply,
     Modulus,
-    Recover,
+    Receive,
     JumpGtrZero,
 }

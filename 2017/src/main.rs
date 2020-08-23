@@ -56,8 +56,8 @@ fn main() {
     // run_puzzle(14, d14::solve);
     // run_puzzle(15, d15::solve);
     // run_puzzle(16, d16::solve);
-    run_puzzle(17, d17::solve);
-    // run_puzzle(18, d18::solve);
+    // run_puzzle(17, d17::solve);
+    run_puzzle(18, d18::solve);
     // run_puzzle(19, d19::solve);
     // run_puzzle(20, d20::solve);
     // run_puzzle(21, d21::solve);
