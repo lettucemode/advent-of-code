@@ -8,6 +8,7 @@ edition = "2018"
 
 [dependencies]
 hex = "0.4.0"
+primal = "0.2"
 
 [dependencies.regex]
 version = "1.3.1"
