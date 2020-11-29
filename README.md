@@ -7,6 +7,6 @@ My solutions for the Advent of Code programming problems. https://adventofcode.c
 - 2015: Python 3.7.3
 - 2016: Lua 5.2.4
 - 2017: Rust 1.48
-- 2018: tbd
+- 2018: Go 1.15
 - 2019: tbd
 - 2020: tbd
