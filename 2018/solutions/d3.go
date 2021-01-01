@@ -19,7 +19,6 @@ func D3Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 		}
 	}
 	
-	
 	totalOverlaps := 0
 	for ii := range fabric {
 		for jj := range fabric[ii] {
@@ -54,8 +53,8 @@ func makeFabric(size int) [][]int {
 	return fabric
 }
 
-func parseClaims(input io.Reader) []Claim {
-	claims := make([]Claim, 0, 1357)
+func parseClaims(input io.Reader) []claim {
+	claims := make([]claim, 0, 1357)
 	re := regexp.MustCompile(`#(\d+) @ (\d+),(\d+): (\d+)x(\d+)`)
 	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
@@ -66,13 +65,12 @@ func parseClaims(input io.Reader) []Claim {
 		y, _ := strconv.Atoi(matches[3])
 		w, _ := strconv.Atoi(matches[4])
 		h, _ := strconv.Atoi(matches[5])
-		claims = append(claims, Claim{elf, x, y, w, h})
+		claims = append(claims, claim{elf, x, y, w, h})
 	}
 	return claims
 }
 
-// Claim ...
-type Claim struct {
+type claim struct {
 	Elf int
 	X int
 	Y int
