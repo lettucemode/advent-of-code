@@ -60,6 +60,5 @@ func D2Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 		}
 	}
 	p2 = lines[ii][:index] + lines[ii][index+1:]
-
 	return
 }

@@ -116,7 +116,6 @@ func D4Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 	}
 	minutev, _ = strconv.Atoi(strings.Split(sleepiestMinute, "_")[1])
 	p2 = sleepiestGuard.id * minutev
-
 	return
 }
 
