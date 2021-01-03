@@ -28,4 +28,5 @@ func main() {
 	runPuzzle(3, puzzleFunc(solutions.D3Solve));
 	runPuzzle(4, puzzleFunc(solutions.D4Solve));
 	runPuzzle(5, puzzleFunc(solutions.D5Solve));
+	runPuzzle(6, puzzleFunc(solutions.D6Solve));
 }
