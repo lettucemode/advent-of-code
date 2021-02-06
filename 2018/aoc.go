@@ -10,17 +10,17 @@ import (
 
 type puzzleFunc func(io.Reader) (interface{}, interface{})
 
-func runPuzzle(day int, f puzzleFunc) time.Duration {
+func runPuzzle(day int, f puzzleFunc) (elapsed time.Duration) {
 	in := inputs.GetInput(day)
 	start := time.Now()
 	p1, p2 := f(in)
-	elapsed := time.Now().Sub(start)
+	elapsed = time.Now().Sub(start)
 	fmt.Printf("Day %v: \n", day)
 	fmt.Printf("\tPart 1: %v", fmt.Sprintf("%v", p1))
 	fmt.Printf("\tPart 2: %v", fmt.Sprintf("%v", p2))
 	fmt.Printf("\tDuration: %v", elapsed)
 	fmt.Println()
-	return elapsed
+	return
 }
 
 func main() {
@@ -34,6 +34,7 @@ func main() {
 	totalTime += runPuzzle(7, puzzleFunc(solutions.D7Solve));
 	totalTime += runPuzzle(8, puzzleFunc(solutions.D8Solve));
 	totalTime += runPuzzle(9, puzzleFunc(solutions.D9Solve));
+	totalTime += runPuzzle(10, puzzleFunc(solutions.D10Solve));
 
 	fmt.Println()
 	fmt.Println("Total time:")
