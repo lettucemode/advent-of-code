@@ -25,17 +25,18 @@ func runPuzzle(day int, f puzzleFunc) (elapsed time.Duration) {
 
 func main() {
 	var totalTime time.Duration
-	totalTime += runPuzzle(1, puzzleFunc(solutions.D1Solve));
-	totalTime += runPuzzle(2, puzzleFunc(solutions.D2Solve));
-	totalTime += runPuzzle(3, puzzleFunc(solutions.D3Solve));
-	totalTime += runPuzzle(4, puzzleFunc(solutions.D4Solve));
-	totalTime += runPuzzle(5, puzzleFunc(solutions.D5Solve));
-	totalTime += runPuzzle(6, puzzleFunc(solutions.D6Solve));
-	totalTime += runPuzzle(7, puzzleFunc(solutions.D7Solve));
-	totalTime += runPuzzle(8, puzzleFunc(solutions.D8Solve));
-	totalTime += runPuzzle(9, puzzleFunc(solutions.D9Solve));
-	totalTime += runPuzzle(10, puzzleFunc(solutions.D10Solve));
-	totalTime += runPuzzle(11, puzzleFunc(solutions.D11Solve));
+	totalTime += runPuzzle(1, puzzleFunc(solutions.D1Solve))
+	totalTime += runPuzzle(2, puzzleFunc(solutions.D2Solve))
+	totalTime += runPuzzle(3, puzzleFunc(solutions.D3Solve))
+	totalTime += runPuzzle(4, puzzleFunc(solutions.D4Solve))
+	totalTime += runPuzzle(5, puzzleFunc(solutions.D5Solve))
+	totalTime += runPuzzle(6, puzzleFunc(solutions.D6Solve))
+	totalTime += runPuzzle(7, puzzleFunc(solutions.D7Solve))
+	totalTime += runPuzzle(8, puzzleFunc(solutions.D8Solve))
+	totalTime += runPuzzle(9, puzzleFunc(solutions.D9Solve))
+	totalTime += runPuzzle(10, puzzleFunc(solutions.D10Solve))
+	totalTime += runPuzzle(11, puzzleFunc(solutions.D11Solve))
+	totalTime += runPuzzle(12, puzzleFunc(solutions.D12Solve))
 
 	fmt.Println()
 	fmt.Println("Total time:")
