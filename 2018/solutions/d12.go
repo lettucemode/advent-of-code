@@ -14,18 +14,15 @@ func D12Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 	const num_generations int = 20
 
 	scanner := bufio.NewScanner(input)
-	pots := make([][]bool, num_generations+1)
-	pots[0] = make([]bool, pots_size)
+	pots := make(map[int]bool)
 	rules := make(map[uint8]bool)
-	var offset int
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.Contains(line, "initial") {
 			start := strings.Index(line, "#")
 			state := line[start:]
-			offset = (pots_size - len(state)) / 2
 			for i, c := range state {
-				pots[0][i+offset] = c == '#'
+				pots[i] = c == '#'
 			}
 		} else if strings.Contains(line, "=>") {
 			parts := strings.Split(line, " => ")
@@ -41,47 +38,54 @@ func D12Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 		}
 	}
 
-	for g := 1; g < num_generations+1; g++ {
-		fmt.Printf("%2v: ", g)
-		pots[g] = make([]bool, pots_size)
-		for i := 0; i < pots_size; i++ {
-			if i < 2 {
-				pots[g][i] = false
-			} else if i > pots_size-3 {
-				pots[g][i] = false
-			} else {
-				key := toKey(pots[g-1][i-2 : i+3])
-				pots[g][i] = rules[key]
-			}
+	next_gen_pots := make(map[int]bool)
+	printPotGen(pots, 0)
+	for g := 0; g < num_generations; g++ {
+		for i := -5; i < 205; i++ {
+			key := toKey(pots, i)
+			next_gen_pots[i] = rules[key]
 		}
-		for _, p := range pots[g] {
-			c := "."
-			if p {
-				c = "#"
-			}
-			fmt.Print(c)
+
+		printPotGen(next_gen_pots, g+1)
+		for k := range pots {
+			delete(pots, k)
+			pots[k] = next_gen_pots[k]
 		}
-		fmt.Println()
 	}
 
 	p1 = 0
-	for i, p := range pots[num_generations] {
+	for i, p := range pots {
 		if p {
-			p1 = p1.(int) + (i - offset)
+			p1 = p1.(int) + i
 		}
 	}
 
 	return
 }
 
-func toKey(pots []bool) uint8 {
+func printPotGen(pots map[int]bool, gen int) {
+	fmt.Printf("%3v: ", gen)
+	row := make([]rune, 210)
+	for i := -5; i < 205; i++ {
+		c := '.'
+		pot, ok := pots[i]
+		if ok && pot {
+			c = '#'
+		}
+		row[i+5] = c
+	}
+	fmt.Println(string(row))
+}
+
+func toKey(pots map[int]bool, index int) uint8 {
 	key := uint8(0)
-	for i, p := range pots {
+	for i, k := index-2, 0; i < index+3; i, k = i+1, k+1 {
 		v := uint8(0)
-		if p {
+		pot, ok := pots[i]
+		if ok && pot {
 			v = 1
 		}
-		key |= v << i
+		key |= v << k
 	}
 	return key
 }

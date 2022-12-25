@@ -2,7 +2,6 @@ package solutions
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"math"
 	"regexp"
@@ -31,8 +30,8 @@ func D10Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 		xs := make([]int, 0, len(points))
 		ys := make([]int, 0, len(points))
 		for _, p := range points {
-			xs = append(xs, p.px + i * p.vx)
-			ys = append(ys, p.py + i * p.vy)
+			xs = append(xs, p.px+i*p.vx)
+			ys = append(ys, p.py+i*p.vy)
 		}
 		minx, miny := math.MaxInt32, math.MaxInt32
 		maxx, maxy := math.MinInt32, math.MinInt32
@@ -61,14 +60,16 @@ func D10Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 		matrix[i] = make([]rune, 75)
 	}
 	for _, p := range points {
-		matrix[p.py + targetI * p.vy - 150][p.px + targetI * p.vx - 110] = '*'
+		matrix[p.py+targetI*p.vy-150][p.px+targetI*p.vx-110] = '*'
 	}
-	for _, rw := range matrix {
-		for _, c := range rw {
-			fmt.Print(string(c))
-		}
-		fmt.Println()
-	}
+
+	// print matrix to console (can comment out when running full suite)
+	// for _, rw := range matrix {
+	// 	for _, c := range rw {
+	// 		fmt.Print(string(c))
+	// 	}
+	// 	fmt.Println()
+	// }
 
 	// I seen it with mine own eyes
 	p1 = "JJXZHKFP"
