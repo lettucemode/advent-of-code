@@ -10,9 +10,11 @@ import (
 // D12Solve ...
 func D12Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 
+	// setup for p1
 	const pots_size int = 200
 	const num_generations int = 20
 
+	// parse input & build rules
 	scanner := bufio.NewScanner(input)
 	pots := make(map[int]bool)
 	rules := make(map[uint8]bool)
@@ -38,35 +40,49 @@ func D12Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 		}
 	}
 
-	next_gen_pots := make(map[int]bool)
-	printPotGen(pots, 0)
+	// run p1 simulation
+	min_pot, max_pot := 0, 95
+	// printPotGen(pots, 0, min_pot, max_pot)
 	for g := 0; g < num_generations; g++ {
-		for i := -5; i < 205; i++ {
-			key := toKey(pots, i)
-			next_gen_pots[i] = rules[key]
-		}
-
-		printPotGen(next_gen_pots, g+1)
-		for k := range pots {
-			delete(pots, k)
-			pots[k] = next_gen_pots[k]
-		}
+		advanceGeneration(&pots, &rules, g+1, &min_pot, &max_pot)
+		// printPotGen(pots, g+1, min_pot, max_pot)
 	}
+	p1 = calcAnswer(pots)
 
-	p1 = 0
-	for i, p := range pots {
-		if p {
-			p1 = p1.(int) + i
-		}
-	}
+	// So now we need to change tack - 50B generations is too much.
+	// So instead let's look when the pot-number-calc value
+	// is the same difference from the previous generation
+	// for several gens in a row.
 
 	return
 }
 
-func printPotGen(pots map[int]bool, gen int) {
+func advanceGeneration(pots *map[int]bool, rules *map[uint8]bool, gen int, min_pot *int, max_pot *int) {
+	next_gen_pots := make(map[int]bool)
+	for i := *min_pot - 4; i < *max_pot+5; i++ {
+		key := toKey(*pots, i)
+		next_gen_pots[i] = (*rules)[key]
+		if next_gen_pots[i] {
+			if i < *min_pot {
+				*min_pot = i
+			} else if i > *max_pot {
+				*max_pot = i
+			}
+		}
+	}
+
+	for k := range *pots {
+		delete(*pots, k)
+	}
+	for k := range next_gen_pots {
+		(*pots)[k] = next_gen_pots[k]
+	}
+}
+
+func printPotGen(pots map[int]bool, gen int, min_pot int, max_pot int) {
 	fmt.Printf("%3v: ", gen)
-	row := make([]rune, 210)
-	for i := -5; i < 205; i++ {
+	row := make([]rune, max_pot+5)
+	for i := min_pot; i < max_pot; i++ {
 		c := '.'
 		pot, ok := pots[i]
 		if ok && pot {
@@ -88,4 +104,14 @@ func toKey(pots map[int]bool, index int) uint8 {
 		key |= v << k
 	}
 	return key
+}
+
+func calcAnswer(pots map[int]bool) (total int) {
+	total = 0
+	for i, p := range pots {
+		if p {
+			total += i
+		}
+	}
+	return
 }

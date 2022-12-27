@@ -2,6 +2,7 @@ package solutions
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"math"
 	"regexp"
@@ -63,13 +64,16 @@ func D10Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 		matrix[p.py+targetI*p.vy-150][p.px+targetI*p.vx-110] = '*'
 	}
 
-	// print matrix to console (can comment out when running full suite)
-	// for _, rw := range matrix {
-	// 	for _, c := range rw {
-	// 		fmt.Print(string(c))
-	// 	}
-	// 	fmt.Println()
-	// }
+	// print matrix to console
+	const show_output bool = false
+	if show_output {
+		for _, rw := range matrix {
+			for _, c := range rw {
+				fmt.Print(string(c))
+			}
+			fmt.Println()
+		}
+	}
 
 	// I seen it with mine own eyes
 	p1 = "JJXZHKFP"
