@@ -42,9 +42,10 @@ func D12Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 
 	// run p1 simulation
 	min_pot, max_pot := 0, 95
+	g := 0
 	// printPotGen(pots, 0, min_pot, max_pot)
-	for g := 0; g < num_generations; g++ {
-		advanceGeneration(&pots, &rules, g+1, &min_pot, &max_pot)
+	for ; g < num_generations; g++ {
+		advanceGeneration(&pots, &rules, &min_pot, &max_pot)
 		// printPotGen(pots, g+1, min_pot, max_pot)
 	}
 	p1 = calcAnswer(pots)
@@ -53,11 +54,34 @@ func D12Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 	// So instead let's look when the pot-number-calc value
 	// is the same difference from the previous generation
 	// for several gens in a row.
+	lastTenAnswers := make([]int, 0)
+	lastTenAnswers = append(lastTenAnswers, p1.(int))
+	allSameDiffs := false
+	for {
+		advanceGeneration(&pots, &rules, &min_pot, &max_pot)
+		lastTenAnswers = append(lastTenAnswers, calcAnswer(pots))
+		g++
+		if len(lastTenAnswers) > 10 {
+			lastTenAnswers = lastTenAnswers[1:]
+		}
+		if len(lastTenAnswers) == 10 {
+			allSameDiffs = true
+			firstDiff := lastTenAnswers[1] - lastTenAnswers[0]
+			for i := 2; i < 9; i++ {
+				allSameDiffs = allSameDiffs && ((lastTenAnswers[i] - lastTenAnswers[i-1]) == firstDiff)
+			}
+		}
+		if allSameDiffs {
+			break
+		}
+	}
+	diff := lastTenAnswers[len(lastTenAnswers)-1] - lastTenAnswers[len(lastTenAnswers)-2]
+	fmt.Println(g, diff)
 
 	return
 }
 
-func advanceGeneration(pots *map[int]bool, rules *map[uint8]bool, gen int, min_pot *int, max_pot *int) {
+func advanceGeneration(pots *map[int]bool, rules *map[uint8]bool, min_pot *int, max_pot *int) {
 	next_gen_pots := make(map[int]bool)
 	for i := *min_pot - 4; i < *max_pot+5; i++ {
 		key := toKey(*pots, i)
