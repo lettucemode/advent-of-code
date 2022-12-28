@@ -75,8 +75,11 @@ func D12Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 			break
 		}
 	}
+
+	// the final step
 	diff := lastTenAnswers[len(lastTenAnswers)-1] - lastTenAnswers[len(lastTenAnswers)-2]
-	fmt.Println(g, diff)
+	fifty_billion := 50000000000
+	p2 = lastTenAnswers[len(lastTenAnswers)-1] + diff*(fifty_billion-g)
 
 	return
 }
