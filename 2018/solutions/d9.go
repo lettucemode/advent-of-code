@@ -18,20 +18,20 @@ func D9Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 	lastMarble, _ := strconv.Atoi(matches[2])
 
 	p1 = findMaxScore(players, lastMarble)
-	p2 = findMaxScore(players, lastMarble * 100)
-	
+	p2 = findMaxScore(players, lastMarble*100)
+
 	return
 }
 
 func findMaxScore(players int, lastMarble int) (maxScore int) {
-	scores := make([]int, players, players)
+	scores := make([]int, players)
 	marble, player := 0, 0
 	circle := ring.New(1)
 	circle.Value = marble
 	marble++
 
 	for {
-		if marble % 23 != 0 {		
+		if marble%23 != 0 {
 			// insert new marble after next one
 			circle = circle.Next()
 			newMarble := ring.New(1)
@@ -54,7 +54,7 @@ func findMaxScore(players int, lastMarble int) (maxScore int) {
 		}
 		player = (player + 1) % players
 	}
-	
+
 	for _, score := range scores {
 		if score > maxScore {
 			maxScore = score

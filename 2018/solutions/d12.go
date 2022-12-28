@@ -11,7 +11,6 @@ import (
 func D12Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 
 	// setup for p1
-	const pots_size int = 200
 	const num_generations int = 20
 
 	// parse input & build rules
@@ -43,10 +42,15 @@ func D12Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 	// run p1 simulation
 	min_pot, max_pot := 0, 95
 	g := 0
-	// printPotGen(pots, 0, min_pot, max_pot)
+	const show_output bool = false
+	if show_output {
+		printPotGen(pots, 0, min_pot, max_pot)
+	}
 	for ; g < num_generations; g++ {
 		advanceGeneration(&pots, &rules, &min_pot, &max_pot)
-		// printPotGen(pots, g+1, min_pot, max_pot)
+		if show_output {
+			printPotGen(pots, g+1, min_pot, max_pot)
+		}
 	}
 	p1 = calcAnswer(pots)
 

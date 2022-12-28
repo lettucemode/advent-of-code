@@ -34,7 +34,7 @@ func D4Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 			lastGuardID, _ = strconv.Atoi(matchesGuard[1])
 			_, ok := guards[lastGuardID]
 			if !ok {
-				guards[lastGuardID] = &guard{ lastGuardID, make([]event, 1), map[string]int{}}
+				guards[lastGuardID] = &guard{lastGuardID, make([]event, 1), map[string]int{}}
 			}
 			evt := event{dt.Hour(), dt.Minute(), eventBegin}
 			guards[lastGuardID].events = append(guards[lastGuardID].events, evt)
@@ -57,9 +57,9 @@ func D4Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 				currHour := evt.hour
 				currMinute := evt.minute
 
-				for true {
+				for {
 					key := fmt.Sprintf("%d_%d", currHour, currMinute)
-				
+
 					_, ok := guard.minutes[key]
 					if ok {
 						guard.minutes[key]++
@@ -76,16 +76,16 @@ func D4Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 						}
 					}
 
-					if currHour == guard.events[i + 1].hour && currMinute == guard.events[i + 1].minute {
+					if currHour == guard.events[i+1].hour && currMinute == guard.events[i+1].minute {
 						break
 					}
 				}
 			}
 		}
-	}	
+	}
 
 	// strat 1
-	sleepiestGuard := &guard {0, make([]event, 1), map[string]int{}}
+	sleepiestGuard := &guard{0, make([]event, 1), map[string]int{}}
 	for _, guard := range guards {
 		if totalSleepiness(guard) > totalSleepiness(sleepiestGuard) {
 			sleepiestGuard = guard
@@ -127,19 +127,19 @@ func totalSleepiness(g *guard) (sum int) {
 }
 
 type guard struct {
-	id int
-	events []event
+	id      int
+	events  []event
 	minutes map[string]int
 }
 
 type event struct {
-	hour int
-	minute int
+	hour      int
+	minute    int
 	eventType int
 }
 
 const (
 	eventBegin = iota
 	eventSleep = iota
-	eventWake = iota
+	eventWake  = iota
 )
