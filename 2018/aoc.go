@@ -37,6 +37,7 @@ func main() {
 	totalTime += runPuzzle(10, puzzleFunc(solutions.D10Solve))
 	totalTime += runPuzzle(11, puzzleFunc(solutions.D11Solve))
 	totalTime += runPuzzle(12, puzzleFunc(solutions.D12Solve))
+	totalTime += runPuzzle(13, puzzleFunc(solutions.D13Solve))
 
 	fmt.Println()
 	fmt.Println("Total time:")
