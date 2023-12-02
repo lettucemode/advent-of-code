@@ -37,6 +37,7 @@ func D13Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 		lineCount++
 	}
 
+	firstCrash := true
 	for {
 		sort.Slice(carts, func(x, y int) bool {
 			return (carts[x].p.y)*1000+carts[x].p.x < (carts[y].p.y)*1000+carts[y].p.x
@@ -104,7 +105,10 @@ func D13Solve(input io.Reader) (p1 interface{}, p2 interface{}) {
 					continue
 				}
 				if cart.p.x == carts[k].p.x && cart.p.y == carts[k].p.y {
-					p1 = fmt.Sprintf("%v,%v", cart.p.x, cart.p.y)
+					if firstCrash {
+						p1 = fmt.Sprintf("%v,%v", cart.p.x, cart.p.y)
+						firstCrash = false
+					}
 					goto breakout
 				}
 			}
