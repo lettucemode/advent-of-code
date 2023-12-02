@@ -5,8 +5,10 @@ namespace _2023;
 public static partial class Day1 {
 
     public static (int, int) Solve() {
-        var p1sum = 0;
+
         var lines = File.ReadAllLines("day1.txt");
+
+        var p1sum = 0;
         var digitRegex = SingleDigitRegex();
         foreach (var line in lines) {
             var matches = digitRegex.Matches(line);
