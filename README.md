@@ -8,5 +8,4 @@ My solutions for the Advent of Code programming problems. https://adventofcode.c
 - 2016: Lua 5.2.4
 - 2017: Rust 1.48
 - 2018: Go 1.19.4
-- 2019: tbd
-- 2020: tbd
+- 2023: C# 12 on .NET 8
