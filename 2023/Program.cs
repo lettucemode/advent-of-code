@@ -5,8 +5,12 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        SolveDay(1, new Day1().Solve);
-        SolveDay(2, new Day2().Solve);
+        for (var i = 1; i <= 25; i++) {
+            var t = Type.GetType($"_2023.Day{i}");
+            if (t == null) continue;
+            var instance = (IDaySolver)Activator.CreateInstance(t)!;
+            SolveDay(i, instance.Solve);
+        }   
     }
 
     private static void SolveDay(int day, Solver solver)
