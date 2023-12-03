@@ -2,11 +2,11 @@ using System.Text.RegularExpressions;
 
 namespace _2023;
 
-public static partial class Day1 {
+public partial class Day1 : IDaySolver {
 
-    public static (int, int) Solve() {
+    public (object, object) Solve(string input) {
 
-        var lines = File.ReadAllLines("day1.txt");
+        var lines = input.Split("\n");
 
         var p1sum = 0;
         var digitRegex = SingleDigitRegex();

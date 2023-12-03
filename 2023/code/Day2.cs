@@ -2,11 +2,11 @@ using System.Text.RegularExpressions;
 
 namespace _2023;
 
-public static partial class Day2 {
+public partial class Day2 : IDaySolver {
 
-    public static (int, int) Solve() {
+    public (object, object) Solve(string input) {
 
-        var lines = File.ReadAllLines("day2.txt");
+        var lines = input.Split("\n");
         var games = new Dictionary<int, List<Pull>>();
         foreach (var line in lines) {
             var gameId = int.Parse(GameIdRegex().Match(line).Groups[1].Value);
