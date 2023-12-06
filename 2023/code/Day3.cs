@@ -1,8 +1,6 @@
-using System.Text.RegularExpressions;
-
 namespace _2023;
 
-public partial class Day3 : IDaySolver {
+public class Day3 : IDaySolver {
 
     public (object, object) Solve(string input) {
         var lines = input.Split('\n', StringSplitOptions.TrimEntries);
@@ -14,7 +12,7 @@ public partial class Day3 : IDaySolver {
             for (var col = 0; col < lines[row].Length; col++) {
                 if (IsSymbol(lines[row][col])) {
                     
-                    // look around each symbol for numbers
+                    // look around each symbol for digits
                     var digitLocations = new List<(int, int)>();
                     for (var r = -1; r < 2; r++) {
                         for (var c = -1; c < 2; c++) {
@@ -24,8 +22,8 @@ public partial class Day3 : IDaySolver {
                         }
                     }
 
-                    // for each number location, search left and right
-                    // for where the number starts and ends.
+                    // for each digit location, search left and right
+                    // for where the full number starts and ends.
                     // then add that to a set and consider those our adjacent numbers.
                     // note this only works because these assumptions hold in the input:
                     // 1) each number is adjacent to at most one symbol
