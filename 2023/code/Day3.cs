@@ -9,10 +9,12 @@ public partial class Day3 : IDaySolver {
         var partNumbers = new List<int>();
         var gearRatios = new List<int>();
 
+        // find symbols
         for (var row = 0; row < lines.Length; row++) {
             for (var col = 0; col < lines[row].Length; col++) {
                 if (IsSymbol(lines[row][col])) {
                     
+                    // look around each symbol for numbers
                     var digitLocations = new List<(int, int)>();
                     for (var r = -1; r < 2; r++) {
                         for (var c = -1; c < 2; c++) {
@@ -22,6 +24,12 @@ public partial class Day3 : IDaySolver {
                         }
                     }
 
+                    // for each number location, search left and right
+                    // for where the number starts and ends.
+                    // then add that to a set and consider those our adjacent numbers.
+                    // note this only works because these assumptions hold in the input:
+                    // 1) each number is adjacent to at most one symbol
+                    // 2) a symbol's adjacent numbers are all unique
                     var set = new HashSet<int>();
                     foreach (var dloc in digitLocations) {
                         var left = dloc.Item2;
