@@ -7,6 +7,11 @@ public class Day3 : IDaySolver {
         var partNumbers = new List<int>();
         var gearRatios = new List<int>();
 
+        // input holds to these assumptions:
+        // 1) each number is adjacent to at most one symbol
+        // 2) a symbol's adjacent numbers are all unique
+        // makes things easier than it could have been
+
         // find symbols
         for (var row = 0; row < lines.Length; row++) {
             for (var col = 0; col < lines[row].Length; col++) {
@@ -22,12 +27,7 @@ public class Day3 : IDaySolver {
                         }
                     }
 
-                    // for each digit location, search left and right
-                    // for where the full number starts and ends.
-                    // then add that to a set and consider those our adjacent numbers.
-                    // note this only works because these assumptions hold in the input:
-                    // 1) each number is adjacent to at most one symbol
-                    // 2) a symbol's adjacent numbers are all unique
+                    // find full number at each digit location, add them to a set
                     var set = new HashSet<int>();
                     foreach (var dloc in digitLocations) {
                         var left = dloc.Item2;
