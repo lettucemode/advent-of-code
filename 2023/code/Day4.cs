@@ -16,10 +16,9 @@ public class Day4 : IDaySolver {
             var having = ints[11..];
             var hits = having.Sum(x => winning.Contains(x) ? 1 : 0);
 
-            var points = (int)Math.Pow(2, hits - 1);
-            p1points += points;
-
+            p1points += (int)Math.Pow(2, hits - 1);
             p2cards += numCards[card];
+
             for (int i = 1; i <= hits; i++) {
                 numCards[card + i] += numCards[card];
             }
